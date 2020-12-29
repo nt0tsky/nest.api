@@ -1,8 +1,9 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Users, UsersDTO} from "../common/models/users.entity";
+import {Users, UsersDTO} from "@/common/models/users.entity";
 import {Repository} from "typeorm";
-import {encryptToSha256} from "../common/utils";
+import {encryptToSha256} from "@/common/utils";
+import {JwtService} from '@nestjs/jwt';
 
 /**
  * * Сервис авторизации
@@ -14,7 +15,9 @@ export class SignInService {
    * * Описываем, что сервис регистрации зависим от менеджера работы с пользователями
    * @param usersRepository
    */
-  constructor(@InjectRepository(Users) private readonly usersRepository: Repository<Users>) {
+  constructor(
+    @InjectRepository(Users) private readonly usersRepository: Repository<Users>,
+    private readonly jwtService: JwtService) {
   }
 
   /**
@@ -42,5 +45,13 @@ export class SignInService {
     const {password, ...other} = user;
 
     return other;
+  }
+
+  async login(user: UsersDTO) {
+    const payload = {email: user.email, sub: user.id};
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

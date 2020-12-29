@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 import {SignUpService} from "./signup.service";
 import {SignUpController} from "./signup.controller";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Users} from "../common/models/users.entity";
+import {Users} from "@/common/models/users.entity";
 
 /**
  * * Модуль регистрации

@@ -1,12 +1,15 @@
-import {Controller, Post, Request, UseGuards} from "@nestjs/common";
+import {Controller, Logger, Post, Request, UseGuards} from "@nestjs/common";
 import {SignInService} from "./signin.service";
 import {LocalAuthGuard} from "./guards/local.guard";
+import {UsersDTO} from "@/common/models/users.entity";
 
 /**
  * * Контроллер авторизации
  */
 @Controller("/signin")
 export class SignInController {
+  private readonly logger = new Logger(SignInController.name);
+
   /**
    * * Зависимости, которые будут добавлены через Dependency Injection
    * @param signInService Сервис авторизации
@@ -21,6 +24,8 @@ export class SignInController {
   @UseGuards(LocalAuthGuard)
   @Post("/")
   async login(@Request() req) {
-    return req.user;
+    this.logger.log("login success", (<UsersDTO>req.user).email);
+
+    return this.signInService.login(req.user);
   }
 }

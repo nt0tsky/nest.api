@@ -1,4 +1,5 @@
 import {PrimaryGeneratedColumn} from "typeorm";
+import {Field, ObjectType} from "@nestjs/graphql";
 
 /**
  * * Тип идентификатора
@@ -16,7 +17,9 @@ export interface IIdentity {
  * * Базовый класс сущности
  * * Имеет общий для всех сущностей тип, такой как идентификатор
  */
+@ObjectType()
 export abstract class AbstractEntity implements IIdentity {
   @PrimaryGeneratedColumn()
+  @Field({nullable: false})
   id: Identity;
 }

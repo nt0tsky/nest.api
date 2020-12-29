@@ -1,6 +1,6 @@
 import {SignUpService} from "./signup.service";
-import {Body, Controller, HttpStatus, Post} from "@nestjs/common";
-import {Users} from "../common/models/users.entity";
+import {Body, Controller, HttpStatus, Logger, Post} from "@nestjs/common";
+import {Users} from "@/common/models/users.entity";
 
 /**
  * * Контроллер регистрации
@@ -8,6 +8,8 @@ import {Users} from "../common/models/users.entity";
  */
 @Controller({path: "signup"})
 export class SignUpController {
+  private readonly logger = new Logger(SignUpController.name);
+
   /**
    * * Зависимости, которые будут добавлены через Dependency Injection
    * @param signUpService Сервис регистрации
@@ -28,9 +30,13 @@ export class SignUpController {
       const isExists = await this.signUpService.IsExists(usersDTO.email);
 
       if (isExists) {
+        const error = `user with email: ${usersDTO.email} is already exists`;
+
+        this.logger.error(error);
+
         return {
           status: HttpStatus.BAD_REQUEST,
-          error: "user with that email is already exists"
+          error
         }
       }
 
@@ -41,9 +47,13 @@ export class SignUpController {
         id
       }
     } catch (err) {
+      const error = `unknown server error: ${err}`;
+
+      this.logger.error(error);
+
       return {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: `unknown server error: ${err}`
+        error
       }
     }
   }

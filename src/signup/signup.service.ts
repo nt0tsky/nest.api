@@ -1,15 +1,16 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
-import {Users} from "../common/models/users.entity";
+import {Users} from "@/common/models/users.entity";
 import {encryptToSha256} from "../common/utils";
-import {IIdentity} from "../common/models/abstract.entity";
+import {IIdentity} from "@/common/models/abstract.entity";
 
 /**
  * * Сервис регистрации
  */
 @Injectable()
 export class SignUpService {
+
   /**
    * * При помощи инверсии зависимостей, и инъекции в конструктор
    * * Описываем, что сервис регистрации зависим от менеджера работы с пользователями

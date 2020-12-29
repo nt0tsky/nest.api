@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Bookmark {
+  id: Float!
+  user: Users!
+  description: String!
+}
+
+type Users {
+  id: Float!
+  email: String!
+  userName: String
+  Bookmarks: [Bookmark!]
+}
+
+type Query {
+  bookmark(id: Int!): Bookmark!
+  bookmarks: [Bookmark!]!
+}
+
+type Mutation {
+  addBookmark(bookmarkInput: NewBookmarkInput!): Bookmark!
+}
+
+input NewBookmarkInput {
+  description: String!
+}
